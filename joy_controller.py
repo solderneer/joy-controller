@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-# Importing libraries and ros stuff
+# importing libraries and ros stuff
 import rospy
 import spidev
-from sensor_msgs import Joy
+from sensor_msgs.msg import Joy
 
 def callback(data):
 
@@ -26,9 +26,7 @@ def callback(data):
     elif (data.axes[1] < 0):
         temp = int(((-data.axes[1])/0.02) + 50)
         to_send = [136, temp]
-        spi.xfer(to_send)t
-    else:
-        # do nothing
+        spi.xfer(to_send)
 
     # Right joystick and mapping values from 0 -> 1 to -> 100
     to_send = [134, (data.axes[6] * 100)]
@@ -37,17 +35,18 @@ def callback(data):
 
 def start():
     # Global handle for SPIdev so that callback can send data
-    global spi = spidev.SpiDev()
+    global spi
+    spi = spidev.SpiDev()
     spi.open(bus, device) # Connects to the specified SPI device, opening /dev/spidev<bus>.<device>
 
     # inset more settings for spi as required here ( https://github.com/doceme/py-spidev )
     # Example code
     # spi.max_speed_hz = 5000
     # spi.mode = 0b01
-    
+
     rospy.Subscriber("joy", Joy, callback) # Subscribe to the rostopic joy with the structure of sensor_msg Joy
-    rospy.init node('joy_controller') # Set name of node to be joy_controller
+    rospy.init_node('joy_controller') # Set name of node to be joy_controller
     rospy.spin() # Prevent end of execution until node is stopped
 
-if name == '__main__':
+if __name__ == '__main__':
     start()

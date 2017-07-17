@@ -3,18 +3,28 @@ import spidev
 from sensor_msgs import Joy
 
 def callback(data):
-    if(data.buttons[1]):
+    if (data.buttons[1]):
         to_send = [129, 1]
         spi.xfer(to_send)
 
-    if(data.buttons[4]):
+    if (data.buttons[4]):
         to_send = [144, 1]
         spi.xfer(to_send)
 
-    to_send = [134, (data.axes[6] * 100)]
-    spi.xfer(to_send)
 
-    to_send = [136, ((data.axes[1] + 1) * 50)]
+    if (data.axes[1] > 0):
+        temp = int((1 - data.axes[1])/0.02)
+        to_send = [136, temp]
+        spi.xfer(to_send)
+
+    elif (data.axes[1] < 0):
+        temp = int(((-data.axes[1])/0.02) + 50)
+        to_send = [136, temp]
+        spi.xfer(to_send)
+    else:
+        # do nothing
+
+    to_send = [134, (data.axes[6] * 100)]
     spi.xfer(to_send)
 
 

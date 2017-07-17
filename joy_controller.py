@@ -3,6 +3,14 @@ import spidev
 from sensor_msgs import Joy
 
 def callback(data):
+    if(data.buttons[1]):
+        to_send = [0x01, 0x02, 0x03]
+        spi.xfer(to_send)
+    else:
+        to_send = [0x01, 0x02, 0x03]
+        spi.xfer(to_send)
+
+    
 
 
 def start():

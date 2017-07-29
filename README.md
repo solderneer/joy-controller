@@ -13,7 +13,7 @@ cd ~/catkin_ws
 catkin_make
 ```
 # Instructions to run
-To run the script just start the respective rosnode. Bear in mind that the spi device and bus settings have to be set it the `/script/joy_controller.py` before the node can be run. Else an error will be thrown.
+To run the script just start the respective rosnode. Bear in mind that the spi device and bus settings have to be set in the `/script/joy_controller.py` before the node can be run. Else an error will be thrown.
 
  ```
  rosrun joy_controller joy_controller.py
